@@ -70,7 +70,6 @@ All 3 questions solved and I love doing analysis on NBA!!!
 
 df = pd.read_csv('../input/nba-players-data/all_seasons.csv', index_col='Unnamed: 0')
 df = df.sort_values(by='season').reset_index(drop=True)
-# Create a column for each player's points from the previous season
 df['previous_season_points'] = df.groupby('player_name')['pts'].shift()
 
 df = df.dropna(subset=['previous_season_points'])
@@ -101,7 +100,7 @@ best_player = df.loc[df['predicted_pts'].idxmax()]
 
 print(f"The player predicted to be the next season's scoring leader is {best_player['player_name']} with height {best_player['player_height']} and weight {best_player['player_weight']}.")
 
-# The player predicted to be the next season's scoring leader is Allen Iverson with height 182.88 and weight 74.84268.
+## The player predicted to be the next season's scoring leader is Allen Iverson with height 182.88 and weight 74.84268.
 
 This model Predict the height and weight of the scoring leader for the next season, which makes sense to me!
 
@@ -110,7 +109,6 @@ This model Predict the height and weight of the scoring leader for the next seas
 
 df['draft_year'] = pd.to_numeric(df['draft_year'].replace('Undrafted', '0'))
 
-# Select features
 features = df.drop(columns=['player_name', 'team_abbreviation', 'college', 'country', 'season', 'pts', 'ts_pct']).columns.tolist()
 
 le = LabelEncoder()
@@ -136,7 +134,7 @@ print(f"Predicted Points: {predicted_pts[0]}")
 print(f"Predicted TS%: {predicted_ts_pct[0]}")
 
 
-# Using the LGBM model, I find out that:
+## Using the LGBM model, I find out that:
 
 Predicted Points: 34.61980615057562
 Predicted TS%: 0.6153144962895687
@@ -149,4 +147,4 @@ Besides these, there are other explorations such as:
 In this series of analysis, I tried to find the patterns between two and more variables such as points and assists, assists and rebounds.
 
 
-All in all, these are my explorations so far on the original data, and I would visit the data again when I have something new.
+## All in all, these are my explorations so far on the original data, and I would visit the data again when I have something new.
