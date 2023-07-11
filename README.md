@@ -66,4 +66,87 @@ All 3 questions solved and I love doing analysis on NBA!!!
 
 
 
+# Now let's move on to something more challenging
 
+df = pd.read_csv('../input/nba-players-data/all_seasons.csv', index_col='Unnamed: 0')
+df = df.sort_values(by='season').reset_index(drop=True)
+# Create a column for each player's points from the previous season
+df['previous_season_points'] = df.groupby('player_name')['pts'].shift()
+
+df = df.dropna(subset=['previous_season_points'])
+
+le = LabelEncoder()
+df['team_abbreviation'] = le.fit_transform(df['team_abbreviation'])
+
+X = df[['age', 'team_abbreviation', 'player_height', 'player_weight', 'previous_season_points']]
+y = df['pts']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+from sklearn.model_selection import RandomizedSearchCV
+regressor = RandomForestRegressor()
+hyperparameters = {
+    'n_estimators': [100, 200, 300, 500],
+    'max_depth': [None, 5, 10, 15],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4]
+}
+
+random_search = RandomizedSearchCV(estimator=regressor, param_distributions=hyperparameters, n_iter=10, cv=5, random_state=42)
+random_search.fit(X_train, y_train)
+
+best_model = random_search.best_estimator_
+
+df['predicted_pts'] = best_model.predict(X)
+best_player = df.loc[df['predicted_pts'].idxmax()]
+
+print(f"The player predicted to be the next season's scoring leader is {best_player['player_name']} with height {best_player['player_height']} and weight {best_player['player_weight']}.")
+
+# The player predicted to be the next season's scoring leader is Allen Iverson with height 182.88 and weight 74.84268.
+
+This model Predict the height and weight of the scoring leader for the next season, which makes sense to me!
+
+
+----- 
+
+df['draft_year'] = pd.to_numeric(df['draft_year'].replace('Undrafted', '0'))
+
+# Select features
+features = df.drop(columns=['player_name', 'team_abbreviation', 'college', 'country', 'season', 'pts', 'ts_pct']).columns.tolist()
+
+le = LabelEncoder()
+
+df['draft_round'] = le.fit_transform(df['draft_round'])
+df['draft_number'] = le.fit_transform(df['draft_number'])
+
+model_pts = LGBMRegressor(n_estimators=500, num_leaves=30, learning_rate=0.05, random_state=42)
+model_ts_pct = LGBMRegressor(n_estimators=500, num_leaves=30, learning_rate=0.05, random_state=42)
+
+X_train, X_test, y_train, y_test = train_test_split(df[features], df['pts'], test_size=0.2, random_state=42)
+model_pts.fit(X_train, y_train)
+
+X_train, X_test, y_train, y_test = train_test_split(df[features], df['ts_pct'], test_size=0.2, random_state=42)
+model_ts_pct.fit(X_train, y_train)
+
+scorer_features = df[df['pts'] == df['pts'].max()][features].iloc[0]
+
+predicted_pts = model_pts.predict([scorer_features])
+predicted_ts_pct = model_ts_pct.predict([scorer_features])
+
+print(f"Predicted Points: {predicted_pts[0]}")
+print(f"Predicted TS%: {predicted_ts_pct[0]}")
+
+
+# Using the LGBM model, I find out that:
+
+Predicted Points: 34.61980615057562
+Predicted TS%: 0.6153144962895687
+
+are the predicted stats for the top scorer next season.
+
+Besides these, there are other explorations such as:
+<img width="641" alt="Screen Shot 2023-07-11 at 11 41 38 PM" src="https://github.com/Jackrao-Git/NBA-Players-Teams-Analysis/assets/108682585/91d4f442-3939-499f-a70f-25735478c9ee">
+
+In this series of analysis, I tried to find the patterns between two and more variables such as points and assists, assists and rebounds.
+
+
+All in all, these are my explorations so far on the original data, and I would visit the data again when I have something new.
