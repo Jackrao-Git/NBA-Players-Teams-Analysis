@@ -147,4 +147,4 @@ Besides these, there are other explorations such as:
 In this series of analysis, I tried to find the patterns between two and more variables such as points and assists, assists and rebounds.
 
 
-## All in all, these are my explorations so far on the original data, and I would visit the data again when I have something new.
+#### All in all, these are my explorations so far on the original data, and I would visit the data again when I have something new, which was something I always love doing.
