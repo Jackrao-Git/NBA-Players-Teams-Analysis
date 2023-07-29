@@ -62,9 +62,6 @@ Rebounding:
 Familiar names
 
 
-All 3 questions solved and I love doing analysis on NBA!!!
-
-
 
 # Now let's move on to something more challenging
 
@@ -138,8 +135,6 @@ print(f"Predicted TS%: {predicted_ts_pct[0]}")
 
 Predicted Points: 34.61980615057562
 Predicted TS%: 0.6153144962895687
-
-are the predicted stats for the top scorer next season.
 
 Besides these, there are other explorations such as:
 <img width="641" alt="Screen Shot 2023-07-11 at 11 41 38 PM" src="https://github.com/Jackrao-Git/NBA-Players-Teams-Analysis/assets/108682585/91d4f442-3939-499f-a70f-25735478c9ee">
