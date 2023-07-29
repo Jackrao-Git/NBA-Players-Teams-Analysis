@@ -102,7 +102,7 @@ print(f"The player predicted to be the next season's scoring leader is {best_pla
 
 ## The player predicted to be the next season's scoring leader is Allen Iverson with height 182.88 and weight 74.84268.
 
-This model Predict the height and weight of the scoring leader for the next season, which makes sense to me!
+This model Predict the height and weight of the scoring leader for the next season
 
 
 ----- 
